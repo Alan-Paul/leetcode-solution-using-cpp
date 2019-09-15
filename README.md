@@ -1,4 +1,4 @@
-**leetcode solutions in cpp
+**leetcode solutions in cpp**
 
 借鉴了[cs-notes](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E7%9B%AE%E5%BD%95.md)中的顺序
 
@@ -29,7 +29,7 @@
     
     
 [633-平方数之和](https://leetcode-cn.com/problems/sum-of-square-numbers/submissions/)
-
+```
     class Solution {
     public:
         bool judgeSquareSum(int c) {
@@ -48,10 +48,10 @@
             return false;
         }
     };
-
+```
 
 [345-反转字符串中的元音字母](https://leetcode-cn.com/problems/reverse-vowels-of-a-string/submissions/)
-
+```
     class Solution {
     public:
         string reverseVowels(string s) {
@@ -72,9 +72,9 @@
             return s;
         }
     };
-    
+```    
 [680-验证回文串](https://leetcode-cn.com/problems/valid-palindrome-ii/submissions/)
-
+```
     class Solution {
     public:
         bool validPalindrome(string s) {
@@ -100,9 +100,9 @@
             return true;
         }
     };
-
+```
 [88-合并两个有序数组](https://leetcode-cn.com/problems/merge-sorted-array/submissions/)
-
+```
     class Solution {
     public:
         void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
@@ -120,3 +120,4 @@
             }        
         }
     };
+```
