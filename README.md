@@ -4,7 +4,7 @@
 
 [167-两数之和](https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/submissions/)
 
-'''
+```
     class Solution {
     public:
         vector<int> twoSum(vector<int>& numbers, int target) {
@@ -25,7 +25,7 @@
             return vector<int>(2, -1);
         }
     };
-'''
+```
     
     
 [633-平方数之和](https://leetcode-cn.com/problems/sum-of-square-numbers/submissions/)
