@@ -45,3 +45,27 @@
             return false;
         }
     };
+
+
+[345-反转字符串中的元音字母](https://leetcode-cn.com/problems/reverse-vowels-of-a-string/submissions/)
+
+    class Solution {
+    public:
+        string reverseVowels(string s) {
+            string letter = "AEIOUaeiou";
+            int low = 0;
+            int high = s.length() - 1;
+            while (low < high) {
+                if (letter.find(s[low]) == letter.npos){
+                    low++;
+                } else if (letter.find(s[high]) == letter.npos) {
+                    high--;
+                } else {
+                    swap(s[low], s[high]);
+                    low++;
+                    high--;
+                }
+            }
+            return s;
+        }
+    };
