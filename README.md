@@ -121,3 +121,33 @@
         }
     };
 ```
+
+[141-环形链表](https://leetcode-cn.com/problems/linked-list-cycle/submissions/)
+```
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        if (head == nullptr)  {
+            return false;
+        }
+        ListNode* pre = head;
+        ListNode* cur = head->next;
+        while (pre != nullptr && cur != nullptr && cur->next != nullptr) {
+            if (pre == cur) {
+                return true;
+            }
+            pre = pre->next;
+            cur = cur->next->next;
+        }
+        return false;
+    }
+};
+```
