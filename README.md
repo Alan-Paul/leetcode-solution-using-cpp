@@ -151,3 +151,29 @@ public:
     }
 };
 ```
+[524-匹配字典最长单词](https://leetcode-cn.com/problems/longest-word-in-dictionary-through-deleting/)
+```
+class Solution {
+public:
+    string findLongestWord(string s, vector<string>& d) {
+        string ret = "";
+        for (int index = 0; index < d.size(); index++) {
+            int i, j;
+            if (d[index].length() < ret.length() ||(d[index].length() == ret.length() && d[index] > ret)) {
+                continue;
+            }
+            for (i = 0, j = 0; i < s.length() && j < d[index].length(); i++) {
+                if (s[i] == d[index][j]) {
+                    j++;
+                }
+            }
+            if (j == d[index].length()) {
+                if (j > ret.length() || (j == ret.length() && d[index] < ret)) {
+                    ret = d[index];
+                }
+            }
+        }
+        return ret;
+    }
+};
+```
