@@ -177,3 +177,73 @@ public:
     }
 };
 ```
+
+[215-第K个最大的元素](https://leetcode-cn.com/problems/kth-largest-element-in-an-array/)
+```
+class Solution {
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        priority_queue<int> max_heap;
+        if (nums.empty() || nums.size() < k) {
+            return -1;
+        }
+        k = nums.size() - k + 1;
+        for (int i = 0; i < k; i++) {
+            max_heap.push(nums[i]);
+        }
+        for (int i = k; i < nums.size(); i++) {
+            if (max_heap.top() > nums[i]) {
+                max_heap.pop();
+                max_heap.push(nums[i]);
+            }
+        }
+        return max_heap.top();
+    }
+};
+```
+[347-出现频率最高的K个元素](https://leetcode-cn.com/problems/top-k-frequent-elements/)
+```
+class Solution {
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        vector<int> ret;
+        if (nums.empty() || nums.size() < k) {
+            return ret;
+        }
+        int n = nums.size();
+        map<int,int> frequency;
+        for (int i=0; i < n; i++) {
+            if (frequency.find(nums[i]) == frequency.end()) {
+                frequency[nums[i]] = 1;
+            
+            } else{
+                frequency[nums[i]] = frequency[nums[i]] + 1;
+            }
+        }
+        vector<vector<int>> buckets(n+1);
+        
+        for (map<int, int>::iterator i=frequency.begin(); i!=frequency.end();) {
+            int key = i->first;
+            int frequency = i->second;
+            buckets[frequency].push_back(key);
+            i++;
+        } 
+        int i = 0;
+        int j = buckets.size();
+        while(i < k) {
+            while(buckets[--j].size()==0);
+            for (int h = 0; h < buckets[j].size(); h++) {
+                if (i == k) {
+                    break;
+                }
+                ret.push_back(buckets[j][h]);
+                i++;
+            }
+        }
+        return ret;
+    }
+};
+```
+
+
+
