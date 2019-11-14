@@ -244,6 +244,108 @@ public:
     }
 };
 ```
+[451-根据字符出现顺序排序](https://leetcode-cn.com/problems/sort-characters-by-frequency)
+```
+class Solution {
+public:
+    string frequencySort(string s) {
+        int len = s.length();
+        if (len <= 0) {
+            return s;
+        }
+        string ret;
+        map<char,int> frequency;
+        for (int i = 0; i < len; i++) {
+            char c = s.at(i);
+            if (frequency.find(c) == frequency.end()) {
+                frequency[c] = 1;
+            } else {
+                frequency[c] += 1;
+            }
+        }
+        vector<vector<char>> buckets(len+1);
+        for(std::map<char, int> :: iterator it = frequency.begin(); it != frequency.end();) {
+            char c = it->first;
+            int cur_frequency = it->second;
+            buckets[cur_frequency].push_back(c);
+            it++;
+        }
+        for(int i = len; i > -1; i--) {
+            if (!buckets[i].empty()) {
+                for (auto c : buckets[i]) {
+                    for (int j = 0; j < i; j++) {
+                        ret.push_back(c);
+                    }
+                }
+            }
+        }
+        return ret;
+    }
+};
+```
+[75-颜色排序，荷兰国旗问题](https://leetcode-cn.com/problems/sort-colors/submissions/)
+```
+class Solution {
+public:
+    void sortColors(vector<int>& nums) {
+        vector<int> frequency(3);
+        for (int i = 0; i < nums.size(); i++) {
+            frequency[nums[i]] ++;
+        }
+        int idx = 0;
+        for (int i = 0; i < frequency.size(); i++) {
+            for (int j = 0; j < frequency[i]; j++) {
+                nums[idx++] = i;
+            }
+        }
+    }
+};
 
+// 第二种解法
+class Solution {
+public:
+    void sortColors(vector<int>& nums) {
+        int zeros = -1;
+        int one = 0;
+        int two = nums.size();
+        while (one < two) {
+            if (nums[one] == 0) {
+                swap(nums, ++zeros, one++);
+            
+            } else if (nums[one] == 2) {
+                swap(nums, --two, one);
+            
+            } else {
+                one++;
+            }
+        }
+    }
+    void swap(vector<int>& nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+};
+```
+[70-爬楼梯](https://leetcode-cn.com/problems/climbing-stairs/submissions/)
+```
+class Solution {
+public:
+    int climbStairs(int n) {
+        //
+        if (n <= 2) {
+            return n;
+        }
+        vector<int> dp(n+1);
+        dp[0] = 0;
+        dp[1] = 1;
+        dp[2] = 2;
+        for (int i = 3; i < dp.size(); i++) {
+            dp[i] = dp[i-1] + dp[i-2];
+        }
+        return dp[n];
+    }
+};
+```
 
 
