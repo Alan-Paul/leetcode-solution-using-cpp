@@ -378,5 +378,36 @@ public:
         return (a > b) ? a : b;
     }
 };
+
+
+
+// 解法2：
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        if (nums.size() <= 0) {
+            return 0;
+        
+        } else if (nums.size() == 1) {
+            return nums[0];
+        
+        } else if (nums.size() == 2) {
+            return max(nums[0], nums[1]);
+        
+        } else {
+            int pre2 = nums[0];
+            int pre1 = max(nums[0], nums[1]);
+            for (int i = 2; i < nums.size(); i++) {
+                int cur = max(pre2 + nums[i], pre1);
+                pre2 = pre1;
+                pre1 = cur;
+            }
+            return pre1;
+        }
+    }
+    int max(int i, int j) {
+        return (i > j) ? i : j;
+    }
+};
 ```
 
