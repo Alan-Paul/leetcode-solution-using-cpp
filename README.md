@@ -410,4 +410,37 @@ public:
     }
 };
 ```
-
+[213-打家劫舍](https://leetcode-cn.com/problems/house-robber-ii/submissions/)
+```
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        if (nums.size() == 0) {
+            return 0;
+        
+        } else if (nums.size() == 1) {
+            return nums[0];
+        
+        } else if (nums.size() == 2) {
+            return max(nums[0], nums[1]);
+        
+        } else {
+            int n = nums.size();
+            return max(rob(nums, 0, n - 1), rob(nums, 1, n));
+        }
+    }
+    int rob(vector<int>& nums, int begin, int end) {
+        int pre1 = 0;
+        int pre2 = 0;
+        for (int i = begin; i < end; i++)  {
+            int cur = max(pre2 + nums[i], pre1);
+            pre2 = pre1;
+            pre1 = cur;
+        }
+        return pre1;
+    }
+    int max(int i, int j) {
+        return (i > j) ? i : j;
+    }
+};
+```
