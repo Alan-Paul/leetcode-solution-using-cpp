@@ -444,3 +444,54 @@ public:
     }
 };
 ```
+[1143-最长公共子序列](https://leetcode-cn.com/problems/longest-common-subsequence/submissions/)
+```
+class Solution {
+public:
+    int longestCommonSubsequence(string text1, string text2) {
+        //状态 ： dp[i][j], 表示 text1 第 i 位与 text2 第 j 位的公共子序列长度;
+        // 状态转移 ：若 text1[i] == text2[j]， 则 dp[i][j] = dp[i-1][j-1] + 1 ; 否则， dp[i][j] = max(dp[i][j-1], dp[i-1][j])
+        // 使用到 dp[i-1][j-1], dp[i-1][j], dp[i][j-1] 等左上，上，左三个过往值，用一个值存储 dp[i-1][j-1]，即可
+        int n = text1.size();
+        int m = text2.size();
+        if (n == 0 || m == 0) {
+            return 0;
+        }
+/*
+        vector<vector <int>> dp(n + 1, vector<int>(m + 1, 0));
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                if (text1[i-1] == text2[j-1]) {
+                    dp[i][j] = dp[i-1][j-1] + 1;
+                }
+                else{
+                    dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
+                }
+            }
+        }
+        return dp[n][m];
+*/
+        vector<int> dp(m+1, 0);
+        int last, temp; // last ： 存储 dp[i-1][j-1]; temp : 暂时存储 
+        for (int i = 1; i <= n; i++, last=0) {
+            for (int j = 1; j <= m; j++) {
+                temp = dp[j]; // 存储当前 dp[i][j], 因为即将修改 dp[i][j]， 而下一次循环dp[i][j+1]时，要用到当前的 dp[i][j]
+                if (text1[i-1] == text2[j-1]) {
+                    dp[j] = last + 1;
+                }
+                else{
+                    dp[j] = max(dp[j], dp[j-1]);
+                }
+                last = temp;
+            }
+        }
+        return dp[m];
+    }
+    int max(int a, int b){
+        return a > b ? a : b;
+    }
+};
+```
+
+
+
