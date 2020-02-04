@@ -559,6 +559,65 @@ public:
     }
 };
 ```
+[494-目标和](https://leetcode-cn.com/problems/target-sum/submissions/)
+```
+class Solution {
+public:
+    int findTargetSumWays(vector<int>& nums, int S) {
+        /* 
+        设所有元素和为 M , 正元素和为 P, 负元素和为 N;
+        则有： P + N = S; P - N = M; ==> 2P = S + M ==> P = (S+M)/2
+        则问题等价为求 nums 中和为 P 的子集数，一共有多少个子集的和为 P 
+        */
+        int sum = computeSum(nums);
+        if (sum < S) {
+            return 0;
+        }
+        sum = sum + S;
+        if (sum % 2 != 0) {
+            return 0;
+        }
+        sum /= 2;
 
+        /* 枚举，对每个 num， 计算 +num, -num 的个数
+        return dfs(nums, 0, 0, 0, S);
+        */
+
+        /*
+        状态 ： dp[i][j] : 前 i 个数中， 和为 j 的子集个数
+        状态转移： 
+        1. nums[i] 不取： dp[i][j] = dp[i-1][j]
+        2. nums[i] 取：   dp[i][j] = dp[i-1][j] + dp[i-1][j-nums[i]]
+        
+        vector<int> dp(sum+1, 0);
+        dp[0] = 1; // 初始状态，容积为0时，子集为0，是为一种取法
+        for (auto num : nums){
+            for (int j = sum; j >= num; j--) {
+                dp[j] = dp[j] + dp[j - num];
+            }
+        }
+        return dp[sum];
+        */
+    }
+    int computeSum(vector<int>& nums){
+        int sum = 0;
+        for (auto num : nums){
+            sum += num;
+        }
+        return sum;
+    }
+    int dfs(vector<int>& nums, int i, int sum, int count, int target) {
+        if (i == nums.size()) {
+            if (sum == target) {
+                return ++count;
+            }
+            return count;
+        }
+        else {
+            return dfs(nums, i+1, sum + nums[i], count, target) + dfs(nums, i+1, sum - nums[i], count, target);
+        }
+    }
+};
+```
 
 
