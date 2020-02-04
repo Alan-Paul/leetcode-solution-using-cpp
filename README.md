@@ -512,6 +512,9 @@ public:
         sum /= 2;
         int n = nums.size() + 1;
         int m = sum + 1;
+
+
+        /*  二维数组解法
         vector<vector<bool>> dp(n, vector<bool>(m, false));
         for (int i = 1; i < n; i++) {
             for (int j = 1; j < m; j++) {
@@ -525,6 +528,27 @@ public:
             }
         }
         return dp[n-1][m-1];
+        */
+        
+        
+        /*
+        一维数组解法：从二维数组中可看到，第 i 行只与第 i-1 行的值相关，可用m列一维数组存储并更新,但是要注意的是，状态转移变为：
+        1. 不取第i个数： dp[j] = dp[j]
+        2. j == nums[i] : dp[0] = true
+        3. 取第 i 个数： dp[j] = dp[j-nums[i]]
+         状态转移中， dp[i][j] = dp[i-1][j-nums[i]] || dp[i-1][j]; 而 j-nums[i] 比 j 小，若从前往后更新，则会先更新 dp[i][j-nums[i]]，此时已经丢失了 dp[i-1][j-nums[i]] 的信息 
+        */
+        vector<bool> dp(m, false);
+        for (int i = 0; i < n-1; i++) {
+            for (int j = m; j >= nums[i]; j--) {
+                if (j == nums[i]) {
+                    dp[j] = true;
+                    continue;
+                }
+                dp[j] = dp[j] || dp[j-nums[i]];
+            }
+        }
+        return dp[m-1];
     }
     int computeSum(vector<int>& nums){
         int sum = 0;
