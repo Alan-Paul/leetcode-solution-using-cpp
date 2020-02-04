@@ -492,6 +492,49 @@ public:
     }
 };
 ```
+[416-分割等和子集](https://leetcode-cn.com/problems/partition-equal-subset-sum/submissions/)
+```
+class Solution {
+public:
+    bool canPartition(vector<int>& nums) {
+        // 状态：dp[i][j]， 表示前i个数中， 是否有和恰好为j的子集；
+        /*
+        状态转移： 
+        1. 不取第 i 个数： dp[i][j] = dp[i-1][j]; 当前 i - 1个数已有和为 j 的子集时，
+        2. 取第 i 个数： dp[i][j] = dp[i-1][j-nums[i]]; 当前 i-1 个数已有和为 j - nums[i] 的子集时，加上nums[i]即可得到和为 j 的子集；
+        3. 特殊情况，可置于初始化状态中，  j == nums[i]； 若 j == nums[i] ， 表示nums[i]自身构成一个和为 j 的子集；若置于初始化状态中，则表示 dp[i][0] = true; 因为 j-nums[i] = 0;        
+        */
+        // 看作体积为 sum/2 的 0-1背包问题，这里每个体积的背包要恰好装满，所以每个背包的初始状态应设为无穷，保证每个背包的状态都是由其初始状态转换而来，详见《背包九讲》第6页。先行判断，总和是否为2的倍数，否则不能分割。 
+        int sum = computeSum(nums);
+        if (sum % 2 != 0) {
+            return false;
+        }
+        sum /= 2;
+        int n = nums.size() + 1;
+        int m = sum + 1;
+        vector<vector<bool>> dp(n, vector<bool>(m, false));
+        for (int i = 1; i < n; i++) {
+            for (int j = 1; j < m; j++) {
+                dp[i][j] = dp[i-1][j];
+                if (j == nums[i-1]) {
+                    dp[i][j] = true;
+                    //continue;
+                } else if (j > nums[i-1]) {// j 小于 nums[i-1]，肯定不取nums[i-1]。 这里的nums[i-1]就是第 i 个数，因为循环中的 i 从1开始到nums.size(); 而 nums数组下标从0开始；
+                dp[i][j] = dp[i-1][j] || dp[i-1][j - nums[i-1]]; // j 大于 nums[i-1], 则可取可不取 nums[i-1]  
+                } 
+            }
+        }
+        return dp[n-1][m-1];
+    }
+    int computeSum(vector<int>& nums){
+        int sum = 0;
+        for (auto num : nums){
+            sum += num;
+        }
+        return sum;
+    }
+};
+```
 
 
 
