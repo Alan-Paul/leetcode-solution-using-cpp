@@ -539,12 +539,9 @@ public:
          状态转移中， dp[i][j] = dp[i-1][j-nums[i]] || dp[i-1][j]; 而 j-nums[i] 比 j 小，若从前往后更新，则会先更新 dp[i][j-nums[i]]，此时已经丢失了 dp[i-1][j-nums[i]] 的信息 
         */
         vector<bool> dp(m, false);
+        dp[0] = true; // dp[i][0] 表示了两种含义， 一种是 j == num; 一种是 容积为 0; 
         for (int i = 0; i < n-1; i++) {
             for (int j = m; j >= nums[i]; j--) {
-                if (j == nums[i]) {
-                    dp[j] = true;
-                    continue;
-                }
                 dp[j] = dp[j] || dp[j-nums[i]];
             }
         }
