@@ -616,5 +616,44 @@ public:
     }
 };
 ```
+[474-一和零](https://leetcode-cn.com/problems/ones-and-zeroes/submissions/)
+```
+class Solution {
+public:
+    int findMaxForm(vector<string>& strs, int m, int n) {
+        // 2维的 0-1背包问题，有两个限制： m, n; 每个物品的价值均为 1 
+        // 状态 ： dp[i][j] : 最多使用 i 个 0 和 j 个 1 的情况下，
+        //        可以拼出的最大最多字符串个数
+        // 状态转移： dp[i][j] = max(dp[i-1][j-1], dp[i-zero(str)][j-one(str)] + 1)
+        //           不取当前字符串 str  ： dp[i-1][j-1]
+        //           取当前字符串 str    :  dp[i - zero(str)][j - one(str)] + 1
+        if (strs.size() == 0) {
+            return 0;
+        }   
+        vector<vector<int>> dp(m+1, vector<int>(n+1, 0));
+        // 困扰多年的初始化问题， 这里并不需要保证 m 跟 n 恰好用完，所以dp[0-m][0-n]都初始化为 dp[0][0] 的状态，即 0
+        for (auto str : strs) {
+            int zeros = 0;
+            int ones = 0;
+            for (int k = 0; k < str.length(); k++) {
+                if (str[k] == '0') {
+                    zeros++;
+                }
+                else if (str[k] == '1') {
+                    ones++;
+                }
+            }
 
-
+            for (int i = m; i >= zeros; i--) {
+                for (int j = n; j >= ones; j--) {
+                    dp[i][j] = max(dp[i][j], dp[i - zeros][j - ones] + 1);
+                }
+            }
+        }
+        return dp[m][n];
+    }
+    int max(int a, int b) {
+        return a > b ? a : b;
+    }
+};
+```
