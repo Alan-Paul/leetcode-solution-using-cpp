@@ -657,3 +657,43 @@ public:
     }
 };
 ```
+[322-零钱兑换](https://leetcode-cn.com/problems/coin-change/)
+```
+class Solution {
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        //背包问题，这里是完全背包，每个硬币可选无数次，注意的是要取的最小次数
+        // 初始化有所不同，dp[0][0]=0 表示需要 0 枚硬币， 但 j == nums[i] 时，需要1枚硬币；所以要将 j == nums[i] 与 dp[0][0] 分别计算
+        // amount 是体积， coins 是物品， 物品代价是 硬币面额， 价值是 1 （个数）， 
+        // 这里要注意的是取价值最小而非价值最大
+        if (coins.size() == 0) {
+            return -1;
+        }
+        if (amount == 0) { // amount 为0时，输出为0，我也不懂
+            return 0;
+        }
+        vector<int> dp(amount + 1, -1);
+        dp[0] = 1;
+        for (auto coin : coins) {
+            for (int j = coin; j <= amount; j++) {
+                if (j == coin) {
+                    dp[j] = 1;
+                }
+                else if (dp[j-coin] != -1) {// dp[j-coin] 已更新，表明有硬币组合能够拼成 j-coin的总金额，那么加上当前的coin，一定可以拼成 j 的总金额
+                    if (dp[j] == -1) {
+                        dp[j] = dp[j-coin] + 1; //当前dp[j] 尚未从初始值 -1 开始更新
+                    }
+                    else {// d[j] != -1, 表示 dp[j] 已经包含了某种组合，这时才能取最小的组合
+                        dp[j] = min(dp[j], dp[j-coin] + 1)                        ;
+                    }
+                    
+                }
+            }
+        }
+        return dp[amount];
+    }
+    int min(int a, int b) {
+        return a < b ? a : b;
+    }
+};
+```
