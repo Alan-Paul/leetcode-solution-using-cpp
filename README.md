@@ -697,3 +697,30 @@ public:
     }
 };
 ```
+[518-零钱兑换II](https://leetcode-cn.com/problems/coin-change-2/submissions/)
+```
+class Solution {
+public:
+    int change(int amount, vector<int>& coins) {
+        if (amount == 0) {
+            return 1;
+        }
+        if (coins.size() == 0) {
+            return 0;
+        }
+        vector<int> dp(amount+1, 0);
+        dp[0] = 1;
+        for (auto coin : coins){
+            for (int j = coin; j <= amount; j++) {
+                dp[j] = dp[j] + dp[j-coin]; // 取或不取的总组合数
+            }
+        }
+        return dp[amount];
+    }
+    int max(int a, int b) {
+        return a > b ? a : b;
+    }
+};
+```
+
+
