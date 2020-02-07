@@ -753,4 +753,57 @@ public:
     }
 };
 ```
+[377-组合总和](https://leetcode-cn.com/problems/combination-sum-iv/submissions/)
+```
+class Solution {
+public:
+    int combinationSum4(vector<int>& nums, int target) {
+        // 带顺序的完全背包问题，循环顺序不一样，先 target，再 nums
+        if (nums.size() == 0)  {
+            return 0;
+        }
+        if (target == 0) {
+            return 1;
+        }
+        int gd = nums[0];
+        for (int num : nums) {
+            gd = gcd(gd, num);
+        }
+        if (target % gd != 0) {
+            return 0;
+        }
+        // vector<int> dp;
+        // int init = 1;
+        vector<unsigned long long> dp;
+        unsigned long long init = 1;
+        dp.push_back(init);
+        for (int i = 1; i <= target; i++) {
+            init = 0;
+            dp.push_back(init);
+        }
+        // 找出最大公约数，若 target 不能被最大公约数整除， 则返回0
+        // 找最大公约数用辗转相除法
+
+        // 将 num 排序
+        sort(nums.begin(), nums.end());
+        for (int j = 1; j <= target; j++) {
+            for (auto num : nums) {
+                if (j >= num) {
+                    dp[j] += dp[j - num]; // 不取num： dp[j], 取num : dp[j-num]      
+                }
+            }
+        }
+        return dp[target];
+    }
+    int gcd(int a, int b) {
+        int temp = 0;
+        while (a % b) {
+            temp = b;
+            b = a % b;
+            a = temp;
+        }
+        return b;
+    }
+};
+```
 
