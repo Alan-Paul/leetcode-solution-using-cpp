@@ -806,4 +806,42 @@ public:
     }
 };
 ```
-
+[583-两个字符串的删除操作](https://leetcode-cn.com/problems/delete-operation-for-two-strings/submissions/)
+```
+class Solution {
+public:
+    int minDistance(string word1, string word2) {
+       // 转化为最长公共子串的问题，
+       // 极端情况， word1 与 word2 没有公共子串， 所需最小步数是 m + n
+       // 若有公共子串长度为 cls， 则word1 与 word2 都可以减少 cls 次操作
+       // 所以所需最小步数是 m + n - 2*cls
+       // 最长公共子串问题 ： 
+       // 状态 ： dp[i][j] : word1 的前 i 位 与 word2 的前 j 位的最长公共子串长度
+       // 状态转移 ： 若 word1[i]  == word2[j], 则dp[i][j] = dp[i-1][j-1] + 1; 
+       // 若 word1[i] != word2[j], 则 dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+       // 初始状态 ： dp[0][0] : 长度为0， 最长公共子串为0， 为保证 dp[i][j]从 dp[0][0] 转移过来，所以所有的dp[i][j] 的初始状态都是 dp[0][0]， 详情看背包九讲 第 6 页；
+       // 因为只需用到 i-1 的状态，所以可以用一行数组，用一个变量记录 dp[i-1][j-1]即可
+       if (word1.size() == 0 || word2.size() == 0) {
+           return word1.size() + word2.size();
+       }
+       int dp_ij = 0;
+       int m = word1.size(), n = word2.size();
+       vector<int> dp(n+1, 0);
+       for (int i = 0; i < m; i++) {
+           dp_ij = dp[0];
+           for (int j = 1; j <= n; j++) {
+               int temp = dp[j];
+               if (word1[i] == word2[j-1]) {
+                   dp[j] = dp_ij + 1; // dp[i-1][j-1] + 1
+               }
+               else {
+                   dp[j] = max(dp[j], dp[j-1]); // dp[i-1][j], dp[i][j-1]
+               }
+               dp_ij = temp;
+           }
+       }
+       int cls = dp[n];
+       return m + n - 2 * cls;
+    }
+};
+```
