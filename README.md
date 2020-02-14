@@ -845,3 +845,37 @@ public:
     }
 };
 ```
+[72-编辑距离](https://leetcode-cn.com/problems/edit-distance/submissions/)
+```
+class Solution {
+public:
+    int minDistance(string word1, string word2) {
+        // dp[i][j] : word1[i]与word2[j]的最少操作数
+        // 状态转移： 若 word1[i] == word2[j]; 则无需做任何操作，
+        //           此时， dp[i][j] = dp[i-1][j-1];
+        // 若 word1[i] != word2[j], 则可以选择三种操作 ： 插入，删除，替换
+        // 替换 ： 使word1[i] == word2[j], 则dp[i][j] = dp[i-1][j-1] + 1
+        // 插入 ： 插入一个字符，使word1[i+1] == word2[j], 此时word1[i]要与word2[j-1]之前的字符做比较，则dp[i][j] = dp[i][j-1] + 1
+        // 删除 ： 将 word1[i]删掉，则此时要比较 word1[i-1] 与 word2[j]之间的关系， dp[i][j] = dp[i-1][j] + 1
+        int n = word1.size();
+        int m = word2.size();
+        vector<vector<int>> dp(n+1, vector<int>(m+1, 0));
+        for (int i = 1; i < n+1; i++) {
+            dp[i][0] = dp[i-1][0] + 1;
+        }
+        for (int j = 1; j < m+1; j++) {
+            dp[0][j] = dp[0][j-1] + 1;
+        }
+        for (int i = 1; i < n+1; i++) {
+            for (int j = 1; j < m+1; j++) {
+                if (word1[i-1] == word2[j-1]) {
+                    dp[i][j] = dp[i-1][j-1];
+                }else {
+                    dp[i][j] = min(dp[i-1][j-1], min(dp[i-1][j], dp[i][j-1])) + 1; // 替换，删除， 插入
+                }
+            }
+        }
+        return dp[n][m];
+    }
+};
+```
