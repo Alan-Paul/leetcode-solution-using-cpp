@@ -879,3 +879,31 @@ public:
     }
 };
 ```
+[650-只有两个键的键盘](https://leetcode-cn.com/problems/2-keys-keyboard/submissions/)
+```
+#include <limits>
+class Solution {
+public:
+    int minSteps(int n) {
+        // 暴力动归
+        // 状态 ： dp[i] : 打印出 i 个 A 的最少次数
+        // 初始状态 ： dp[1] = 0; 因为初始只有一个字符 'A';
+        // 状态转移 ： dp[i] = dp[j] + i / j; 假设对第 j 次的字符进行复制，那么每次粘贴都增加 j 个字符；复制 1 次 + 粘贴 (i-j)/j 次，所以从 j 到 i 要增加 i / j 次操作；
+        if (n == 1) {
+            return 0;
+        }
+        vector<int> dp(n+1, INT_MAX);
+        dp[0] = 0;
+        dp[1] = 0;
+        for (int i = 2; i <= n; i++) {
+            for (int j = 1; j < i; j++) {
+                if (i % j == 0) {
+                    dp[i] = min(dp[i], dp[j] + i / j);
+                }
+            }
+        }
+        return dp[n];
+    }
+};
+```
+
